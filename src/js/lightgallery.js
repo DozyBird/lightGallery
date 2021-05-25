@@ -123,6 +123,25 @@
             }
         }
 
+        // !!! CUSTOM
+        var collated = [];
+        this.$items.each(function(index) {
+            var original_el = this;
+            collated.push(original_el);
+            if ($(original_el).attr('extra_hrefs')) {
+                var extra_hrefs = $(this).attr('extra_hrefs').split(' ');
+                extra_hrefs.forEach(function(href) {
+                    var fake_el = {'href': href, 'extra': true};
+                    if ($(original_el).attr('extra_alt')) {
+                        fake_el['extra_alt'] = $(original_el).attr('extra_alt');
+                    }
+                    console.log(fake_el);
+                    collated.push(fake_el);
+                });
+            }
+        })
+        this.$items = $(collated);
+
         // .lg-item
         this.$slide = '';
 
@@ -466,7 +485,10 @@
                 subHtmlUrl = $currentEle.attr('data-sub-html-url');
             } else {
                 subHtml = $currentEle.attr('data-sub-html');
-                if (this.s.getCaptionFromTitleOrAlt && !subHtml) {
+                // !!! CUSTOM
+                if ($currentEle.attr('extra') && $currentEle.attr('extra_alt')) {
+                    subHtml = $currentEle.attr('extra_alt');
+                } else if (this.s.getCaptionFromTitleOrAlt && !subHtml) {
                     subHtml = $currentEle.attr('title') || $currentEle.find('img').first().attr('alt');
                 }
             }

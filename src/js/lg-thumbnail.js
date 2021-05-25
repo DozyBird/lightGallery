@@ -165,7 +165,11 @@
         } else {
             _this.core.$items.each(function(i) {
 
-                if (!_this.core.s.exThumbImage) {
+                if ($(this).attr('extra')) {
+                    // !!! CUSTOM
+                    var thumbUrl = $(this).attr('href').replace('img/g/', 'img/thumbs/').replace('.jpg', '.png');
+                    getThumb($(this).attr('href'), thumbUrl, i);
+                } else if (!_this.core.s.exThumbImage) {
                     getThumb($(this).attr('href') || $(this).attr('data-src'), $(this).find('img').attr('src'), i);
                 } else {
                     getThumb($(this).attr('href') || $(this).attr('data-src'), $(this).attr(_this.core.s.exThumbImage), i);
